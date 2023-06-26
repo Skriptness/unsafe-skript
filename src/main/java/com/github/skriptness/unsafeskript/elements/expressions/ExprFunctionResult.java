@@ -1,7 +1,9 @@
 package com.github.skriptness.unsafeskript.elements.expressions;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
@@ -13,7 +15,8 @@ import java.util.Arrays;
 public class ExprFunctionResult extends PropertyExpression<FunctionHandle<?>, Object> {
 
     static {
-        register(ExprFunctionResult.class, Object.class, "[function] [call|execution] result", "functions");
+        Skript.registerExpression(ExprFunctionResult.class, Object.class, ExpressionType.PROPERTY,
+                "[call|execution] result[s] of %functions%");
     }
 
     @Override

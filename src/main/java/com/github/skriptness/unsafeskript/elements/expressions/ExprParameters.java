@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class ExprParameters extends PropertyExpression<FunctionHandle, Parameter> {
 
     static {
-        register(ExprParameters.class, Parameter.class, "[all [of] the|all] parameters", "functions");
+        register(ExprParameters.class, Parameter.class, "parameters", "functions");
     }
 
     @Override
