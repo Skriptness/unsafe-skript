@@ -42,10 +42,10 @@ public class Types {
                 .name("Function Parameter")
                 .description("Represents a parameter of a function.")
                 .examples("")
-                .parser(new Parser<Parameter>() {
+                .parser(new Parser<Parameter<?>>() {
                     @Override
                     @Nullable
-                    public Parameter parse(String s, ParseContext context) {
+                    public Parameter<?> parse(String string, ParseContext context) {
                         return null;
                     }
 
@@ -55,12 +55,12 @@ public class Types {
                     }
 
                     @Override
-                    public String toString(Parameter parameter, int flags) {
+                    public String toString(Parameter<?> parameter, int flags) {
                         return Classes.toString(parameter.getType()) + " parameter {_" + parameter.getName() + (parameter.isSingleValue() ? "}" : "::*}");
                     }
 
                     @Override
-                    public String toVariableNameString(Parameter parameter) {
+                    public String toVariableNameString(Parameter<?> parameter) {
                         return "parameter(" + Classes.toString(parameter.getType()) + "):" + parameter.getName();
                     }
                 }));

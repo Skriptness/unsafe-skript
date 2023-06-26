@@ -25,7 +25,7 @@ public class FunctionHandle<ReturnType> {
         this.rawParameters = null;
     }
 
-    public FunctionHandle(Function<ReturnType> function, Expression<?> rawParameters) {
+    public FunctionHandle(Function<ReturnType> function, @Nullable Expression<?> rawParameters) {
         this.function = function;
         this.rawParameters = rawParameters;
     }
@@ -39,8 +39,12 @@ public class FunctionHandle<ReturnType> {
     }
 
     public FunctionHandle<ReturnType> appendParameters(Expression<?> delta) {
-        Class<?> superType = Utils.getSuperType(rawParameters.getReturnType(), delta.getReturnType());
-        rawParameters = new ExpressionList<>(new Expression[] {rawParameters, delta}, superType, true);
+        if (rawParameters == null) {
+            rawParameters = delta;
+        } else {
+            Class<?> superType = Utils.getSuperType(rawParameters.getReturnType(), delta.getReturnType());
+            rawParameters = new ExpressionList<>(new Expression[]{rawParameters, delta}, superType, true);
+        }
         return this;
     }
 
@@ -89,17 +93,18 @@ public class FunctionHandle<ReturnType> {
             params[0] = l.toArray();
 
             // Don't allow mutating across function boundary; same hack is applied to variables
-            for (int i = 0; i < params[0].length; i++) {
+            for (int i = 0; i < params[0].length; i++)
                 params[0][i] = Classes.clone(params[0][i]);
-            }
+
         } else { // Use parameters in normal way
             for (int i = 0; i < parameters.length; i++) {
                 Object[] array = parameters[i].getArray(event);
                 params[i] = Arrays.copyOf(array, array.length);
+
                 // Don't allow mutating across function boundary; same hack is applied to variables
-                for (int j = 0; j < params[i].length; j++) {
+                for (int j = 0; j < params[i].length; j++)
                     params[i][j] = Classes.clone(params[i][j]);
-                }
+
             }
         }
         return params;

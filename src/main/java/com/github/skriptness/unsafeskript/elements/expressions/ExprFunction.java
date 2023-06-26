@@ -35,10 +35,10 @@ public class ExprFunction extends SimpleExpression<FunctionHandle> {
 
     @Override
     @Nullable
-    protected FunctionHandle[] get(Event event) {
+    protected FunctionHandle<?>[] get(Event event) {
         return names.stream(event)
                 .filter(name -> Functions.getFunction(name, null) != null)
-                .map(name -> new FunctionHandle(Functions.getFunction(name, null), rawParameters))
+                .map(name -> new FunctionHandle<>(Functions.getFunction(name, null), rawParameters))
                 .toArray(FunctionHandle[]::new);
     }
 

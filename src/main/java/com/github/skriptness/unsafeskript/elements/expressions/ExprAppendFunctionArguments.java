@@ -19,21 +19,24 @@ public class ExprAppendFunctionArguments extends SimpleExpression<FunctionHandle
     }
 
     private Expression<? extends FunctionHandle> functions;
-    private Expression<Object> parameters;
+    private Expression<? extends Object> parameters;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-        functions = (Expression<? extends FunctionHandle<?>>) exprs[0];
-        if (functions instanceof ExprFunction)
+        functions = (Expression<? extends FunctionHandle>) exprs[0];
+
+        // Don't allow stuff like `function "x" with "x" with "x"`
+        if (functions instanceof ExprFunction || functions instanceof ExprAppendFunctionArguments)
             return false;
-        parameters = LiteralUtils.defendExpression(exprs[0]);
+
+        parameters = LiteralUtils.defendExpression(exprs[1]);
         return LiteralUtils.canInitSafely(parameters);
     }
 
     @Override
     @Nullable
-    protected FunctionHandle[] get(Event event) {
+    protected FunctionHandle<?>[] get(Event event) {
         return functions.stream(event)
                 .filter(function -> !function.hasParameters())
                 .map(function -> function.appendParameters(parameters))

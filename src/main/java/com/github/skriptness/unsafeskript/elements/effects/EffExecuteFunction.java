@@ -15,18 +15,19 @@ public class EffExecuteFunction extends Effect {
         Skript.registerEffect(EffExecuteFunction.class, "(call|execute|run) [function[s]] %functions%");
     }
 
-    private Expression<? extends FunctionHandle> functions;
+    private Expression<? extends FunctionHandle<?>> functions;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-        functions = (Expression<? extends FunctionHandle>) exprs[0];
+        functions = (Expression<? extends FunctionHandle<?>>) exprs[0];
         return true;
     }
 
     @Override
     protected void execute(Event event) {
-        functions.stream(event).forEach(function -> function.execute(event));
+        for (FunctionHandle<?> function : functions.getArray(event))
+            function.execute(event);
     }
 
     @Override

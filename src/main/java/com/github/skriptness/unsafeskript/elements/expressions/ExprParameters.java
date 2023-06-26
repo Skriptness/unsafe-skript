@@ -20,12 +20,12 @@ public class ExprParameters extends PropertyExpression<FunctionHandle, Parameter
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-        setExpr((Expression<? extends FunctionHandle>) exprs[0]);
+        setExpr((Expression<? extends FunctionHandle<?>>) exprs[0]);
         return true;
     }
 
     @Override
-    protected Parameter[] get(Event event, FunctionHandle[] source) {
+    protected Parameter<?>[] get(Event event, FunctionHandle[] source) {
         return Arrays.stream(source)
                 .map(function -> function.getFunction().getParameters())
                 .flatMap(Arrays::stream)

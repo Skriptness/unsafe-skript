@@ -4,4 +4,4 @@ authors: [Mr. Darth, UnderscoreTud]
 api-version: 1.13
 
 main: com.github.skriptness.unsafeskript.UnsafeSkript
-depend: [Skript]
+softdepend: [Skript]
