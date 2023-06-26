@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'com.github.skriptness.unsafeskript'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url 'https://repo.skriptlang.org/releases/'
+    }
+}
+
+dependencies {
+    implementation 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    implementation 'com.github.SkriptLang:Skript:2.7.0-beta3'
+    implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
+}
