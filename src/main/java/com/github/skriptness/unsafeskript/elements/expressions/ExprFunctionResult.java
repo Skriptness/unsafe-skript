@@ -8,7 +8,6 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
-import com.github.skriptness.unsafeskript.elements.classes.ScriptFunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -19,7 +18,7 @@ public class ExprFunctionResult extends PropertyExpression<FunctionHandle<?>, Ob
 
     static {
         Skript.registerExpression(ExprFunctionResult.class, Object.class, ExpressionType.PROPERTY,
-                "[call|execution] result[s] of %functions% [with [[the] (argument|parameter)[s]] %-objects%]");
+                "[the] [call|execution] result[s] of %functions% [with [[the] (argument|parameter)[s]] %-objects%]");
     }
 
     @Nullable

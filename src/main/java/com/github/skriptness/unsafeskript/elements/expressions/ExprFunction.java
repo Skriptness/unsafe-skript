@@ -18,6 +18,7 @@ public class ExprFunction extends SimpleExpression<FunctionHandle> {
                 "[the|a] reference[s] to [the] function[s] %strings%");
     }
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private Expression<String> names;
 
     @Override

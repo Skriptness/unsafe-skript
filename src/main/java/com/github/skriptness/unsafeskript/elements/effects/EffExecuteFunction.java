@@ -7,7 +7,6 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
-import com.github.skriptness.unsafeskript.elements.classes.ScriptFunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -15,9 +14,10 @@ public class EffExecuteFunction extends Effect {
 
     static {
         Skript.registerEffect(EffExecuteFunction.class,
-                "(call|execute|run) [function[s]] %functions% [with [[the] (argument|parameter)[s]] %-objects%]");
+                "(call|execute|run) %functions% [with [[the] (argument|parameter)[s]] %-objects%]");
     }
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private Expression<? extends FunctionHandle<?>> functions;
     @Nullable
     private Expression<?> arguments;

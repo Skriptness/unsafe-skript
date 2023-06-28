@@ -6,7 +6,6 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.function.Parameter;
 import ch.njol.util.Kleenean;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
-import com.github.skriptness.unsafeskript.elements.classes.ScriptFunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -40,7 +39,7 @@ public class ExprParameters extends PropertyExpression<FunctionHandle<?>, Parame
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "all of the parameters of " + getExpr().toString(event, debug);
+        return "all the parameters of " + getExpr().toString(event, debug);
     }
 
 }

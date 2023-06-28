@@ -17,9 +17,12 @@ public class ExprNewParameter extends SimpleExpression<Parameter> {
                 "[a] [new] %*classinfo% parameter %~objects% [(with default value|defaulting to) %-objects%]");
     }
 
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private VariableString name;
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private ClassInfo<?> type;
     private boolean single;
+    @Nullable
     private Expression<?> defaultExpr;
 
     @Override

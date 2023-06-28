@@ -11,8 +11,8 @@ import ch.njol.skript.lang.function.ScriptFunction;
 import ch.njol.skript.lang.function.Signature;
 import ch.njol.skript.registrations.Classes;
 import org.bukkit.event.Event;
+import org.skriptlang.skript.lang.converter.Converters;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,10 +41,19 @@ public interface FunctionHandle<T> {
         Parameter<?>[] parameters = getFunction().getParameters();
         Object[][] args = arguments.length < parameters.length ? Arrays.copyOf(arguments, parameters.length) : arguments;
 
-        // Check if there are null parameters without default values
-        for (int i = 0; i < parameters.length; i++)
-            if (args[i] == null && parameters[i].getDefaultExpression() == null)
-                return null; // Abort on invalid function call
+        // Check if there are invalid parameters without default values
+        for (int i = 0; i < parameters.length; i++) {
+
+            // Attempt conversion
+            Class<?> type = parameters[i].getType().getC();
+            if (args[i] != null && !type.isAssignableFrom(args[i].getClass()))
+                args[i] = Converters.convert(args[i], type);
+
+            // Abort on invalid function call
+            if (args[i] == null || args[i].length == 0 && parameters[i].getDefaultExpression() == null)
+                return null;
+
+        }
 
         T[] result = getFunction().execute(arguments);
         getFunction().resetReturnValue();
@@ -63,7 +72,8 @@ public interface FunctionHandle<T> {
         }
 
         Signature<T> signature = getFunction().getSignature();
-        boolean singleListParam =  signature.getMaxParameters() == 1 && !signature.getParameter(0).isSingleValue();
+        int maxParameters = signature.getMaxParameters();
+        boolean singleListParam = maxParameters == 1 && !signature.getParameter(0).isSingleValue();
 
         // Prepare parameter values for calling
         Object[][] params = new Object[singleListParam ? 1 : parameters.length][];
@@ -78,6 +88,11 @@ public interface FunctionHandle<T> {
                 params[0][i] = Classes.clone(params[0][i]);
 
         } else { // Use parameters in normal way
+
+            // Don't allow more parameters than max
+            if (params.length > maxParameters)
+                return null;
+
             for (int i = 0; i < parameters.length; i++) {
                 Object[] array = parameters[i].getArray(event);
                 params[i] = Arrays.copyOf(array, array.length);
