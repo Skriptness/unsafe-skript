@@ -20,9 +20,13 @@ import java.util.List;
 public interface FunctionHandle<T> {
 
     static FunctionHandle<?> of(String name) {
-        if (Functions.getFunction(name, null) == null)
+        return of(name, null);
+    }
+
+    static FunctionHandle<?> of(String name, String script) {
+        if (Functions.getFunction(name, script) == null)
             return null;
-        return of(Functions.getFunction(name, null));
+        return of(Functions.getFunction(name, script));
     }
 
     static <T> FunctionHandle<T> of(Function<T> function) {
