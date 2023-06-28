@@ -4,9 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.skript.lang.function.Functions;
 import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
 import org.bukkit.event.Event;
@@ -16,20 +14,16 @@ public class ExprFunction extends SimpleExpression<FunctionHandle> {
 
     static {
         Skript.registerExpression(ExprFunction.class, FunctionHandle.class, ExpressionType.COMBINED,
-                "[the] function[ reference][s] %strings% [(with|using) [(argument|parameter)[s]] %-objects%]");
+                "[the] function[ reference][s] %strings%",
+                "[the|a] reference[s] to [the] function[s] %strings%");
     }
 
     private Expression<String> names;
-    private Expression<Object> rawParameters;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
         names = (Expression<String>) exprs[0];
-        if (exprs[1] != null) {
-            rawParameters = LiteralUtils.defendExpression(exprs[1]);
-            return LiteralUtils.canInitSafely(this.rawParameters);
-        }
         return true;
     }
 
@@ -37,8 +31,7 @@ public class ExprFunction extends SimpleExpression<FunctionHandle> {
     @Nullable
     protected FunctionHandle<?>[] get(Event event) {
         return names.stream(event)
-                .filter(name -> Functions.getFunction(name, null) != null)
-                .map(name -> new FunctionHandle<>(Functions.getFunction(name, null), rawParameters))
+                .map(FunctionHandle::of)
                 .toArray(FunctionHandle[]::new);
     }
 
@@ -54,14 +47,7 @@ public class ExprFunction extends SimpleExpression<FunctionHandle> {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        StringBuilder string = new StringBuilder();
-        string.append("the function")
-                .append(isSingle() ? "s " : " ")
-                .append(names.toString(event, debug));
-        if (rawParameters != null)
-            string.append(" with parameters ")
-                    .append(rawParameters.toString(event, debug));
-        return string.toString();
+        return "the function" + (isSingle() ? " " : "s ") + names.toString(event, debug);
     }
 
 }

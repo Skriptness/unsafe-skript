@@ -6,12 +6,13 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.function.Parameter;
 import ch.njol.util.Kleenean;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
+import com.github.skriptness.unsafeskript.elements.classes.ScriptFunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Arrays;
 
-public class ExprParameters extends PropertyExpression<FunctionHandle, Parameter> {
+public class ExprParameters extends PropertyExpression<FunctionHandle<?>, Parameter> {
 
     static {
         register(ExprParameters.class, Parameter.class, "parameters", "functions");
@@ -25,7 +26,7 @@ public class ExprParameters extends PropertyExpression<FunctionHandle, Parameter
     }
 
     @Override
-    protected Parameter<?>[] get(Event event, FunctionHandle[] source) {
+    protected Parameter<?>[] get(Event event, FunctionHandle<?>[] source) {
         return Arrays.stream(source)
                 .map(function -> function.getFunction().getParameters())
                 .flatMap(Arrays::stream)
