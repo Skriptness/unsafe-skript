@@ -50,7 +50,7 @@ public interface FunctionHandle<T> {
                 args[i] = Converters.convert(args[i], type);
 
             // Abort on invalid function call
-            if (args[i] == null || args[i].length == 0 && parameters[i].getDefaultExpression() == null)
+            if ((args[i] == null || args[i].length == 0) && parameters[i].getDefaultExpression() == null)
                 return null;
 
         }
