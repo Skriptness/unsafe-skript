@@ -1,8 +1,14 @@
 package com.github.skriptness.unsafeskript.util;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Trigger;
-import ch.njol.skript.lang.function.*;
-import org.eclipse.jdt.annotation.Nullable;
+import ch.njol.skript.lang.function.Function;
+import ch.njol.skript.lang.function.FunctionReference;
+import ch.njol.skript.lang.function.Functions;
+import ch.njol.skript.lang.function.Namespace;
+import ch.njol.skript.lang.function.Parameter;
+import ch.njol.skript.lang.function.ScriptFunction;
+import ch.njol.skript.lang.function.Signature;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -11,44 +17,24 @@ import java.util.Map;
 // Bonus points if you get the reference
 public final class Reflectness {
 
-    // Naming format: %CLASSNAME%_%FIELDNAME%
-    // Group fields of the same class together; leave a blank line between each group
-    private static final Field FUNCTIONS_JAVA_NAMESPACE;
-    private static final Field FUNCTIONS_GLOBAL_FUNCTIONS;
+    private static final Field FUNCTIONS_JAVANAMESPACE = getField(Functions.class, "javaNamespace");
+    private static final Field FUNCTIONS_GLOBALFUNCTIONS = getField(Functions.class, "globalFunctions");
 
-    private static final Field FUNCTION_SIGN;
+    private static final Field FUNCTION_SIGN = getField(Function.class, "sign");
 
-    private static final Field SCRIPT_FUNCTION_TRIGGER;
+    private static final Field SCRIPTFUNCTION_TRIGGER = getField(ScriptFunction.class, "trigger");
 
-    private static final Field SIGNATURE_PARAMETERS;
-    private static final Field SIGNATURE_CALLS;
+    private static final Field SIGNATURE_PARAMETERS = getField(Signature.class, "parameters");
+    private static final Field SIGNATURE_CALLS = getField(Signature.class, "calls");
 
-    private static final Field FUNCTION_REFERENCE_FUNCTION;
-
-    static {
-        try {
-            FUNCTIONS_JAVA_NAMESPACE = Functions.class.getDeclaredField("javaNamespace");
-            FUNCTIONS_GLOBAL_FUNCTIONS = Functions.class.getDeclaredField("globalFunctions");
-
-            FUNCTION_SIGN = Function.class.getDeclaredField("sign");
-
-            SCRIPT_FUNCTION_TRIGGER = ScriptFunction.class.getDeclaredField("trigger");
-
-            SIGNATURE_PARAMETERS = Signature.class.getDeclaredField("parameters");
-            SIGNATURE_CALLS = Signature.class.getDeclaredField("calls");
-
-            FUNCTION_REFERENCE_FUNCTION = FunctionReference.class.getDeclaredField("function");
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final Field FUNCTIONREFERENCE_FUNCTION = getField(FunctionReference.class, "function");
 
     public static Namespace getJavaNamespace() {
-        return get(FUNCTIONS_JAVA_NAMESPACE, null);
+        return get(FUNCTIONS_JAVANAMESPACE, null);
     }
 
     public static Map<String, Namespace> getGlobalFunctions() {
-        return get(FUNCTIONS_GLOBAL_FUNCTIONS, null);
+        return get(FUNCTIONS_GLOBALFUNCTIONS, null);
     }
 
     public static <T> void setSignature(Function<T> function, Signature<T> signature) {
@@ -56,37 +42,49 @@ public final class Reflectness {
     }
 
     public static void setTrigger(ScriptFunction<?> function, Trigger trigger) {
-        set(SCRIPT_FUNCTION_TRIGGER, function, trigger);
+        set(SCRIPTFUNCTION_TRIGGER, function, trigger);
     }
 
-    public static void setParameters(Signature<?> signature, Parameter<?>[] parameters) {
+    public static <T> void setSignatureParameters(Signature<T> signature, Parameter<?>[] parameters) {
         set(SIGNATURE_PARAMETERS, signature, parameters);
     }
 
-    public static Collection<FunctionReference<?>> getCalls(Signature<?> signature) {
+    public static <T> Collection<FunctionReference<T>> getCalls(Signature<T> signature) {
         return get(SIGNATURE_CALLS, signature);
     }
 
-    public static void setFunction(FunctionReference<?> reference, Function<?> function) {
-        set(FUNCTION_REFERENCE_FUNCTION, reference, function);
+    public static <T> void setReferencedFunction(FunctionReference<T> reference, Function<T> function) {
+        set(FUNCTIONREFERENCE_FUNCTION, reference, function);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> T get(Field field, @Nullable Object object) {
+    private static Field getField(Class<?> clazz, String name) {
         try {
+            Field field = clazz.getDeclaredField(name);
             field.setAccessible(true);
-            return (T) field.get(object);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            return field;
+        } catch (NoSuchFieldException ex) {
+            Skript.warning("Couldn't get '" + name + "' field from " + clazz.getName());
+            return null;
         }
     }
 
-    private static void set(Field field, @Nullable Object object, Object value) {
+    private static <T> T get(Field field, Object object) {
+        if (field == null)
+            return null;
         try {
-            field.setAccessible(true);
-            field.set(object, value);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            //noinspection unchecked
+            return (T) field.get(object);
+        } catch (IllegalAccessException ignored) {
+            return null;
+        }
+    }
+
+    private static void set(Field field, Object object, Object value) {
+        if (field != null) {
+            try {
+                field.set(object, value);
+            } catch (IllegalAccessException ignored) {
+            }
         }
     }
 

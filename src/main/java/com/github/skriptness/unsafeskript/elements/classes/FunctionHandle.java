@@ -3,14 +3,23 @@ package com.github.skriptness.unsafeskript.elements.classes;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionList;
 import ch.njol.skript.lang.Trigger;
-import ch.njol.skript.lang.function.*;
-import ch.njol.skript.log.RetainingLogHandler;
+import ch.njol.skript.lang.function.Function;
+import ch.njol.skript.lang.function.FunctionReference;
+import ch.njol.skript.lang.function.Functions;
+import ch.njol.skript.lang.function.JavaFunction;
+import ch.njol.skript.lang.function.Parameter;
+import ch.njol.skript.lang.function.ScriptFunction;
+import ch.njol.skript.lang.function.Signature;
+import ch.njol.skript.lang.function.SimpleJavaFunction;
+import ch.njol.skript.log.LogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
 import com.github.skriptness.unsafeskript.util.Reflectness;
 import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
 import org.skriptlang.skript.lang.converter.Converters;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,19 +49,18 @@ public interface FunctionHandle<T> {
 
     void swapCode(Trigger trigger);
 
-    default void updateReferences(boolean suppressErrors) {
-        RetainingLogHandler log = SkriptLogger.startRetainingLog();
-        Collection<FunctionReference<?>> calls = Reflectness.getCalls(getFunction().getSignature());
-        for (FunctionReference<?> call : calls)
-            call.validateFunction(true);
-        if (!suppressErrors)
-            log.printLog();
-        log.close();
+    default void setParameters(Parameter<?>[] parameters) {
+        Reflectness.setSignatureParameters(getFunction().getSignature(), parameters);
+        updateReferences();
     }
 
-    default void swapSignature(Signature<T> signature, boolean suppressErrors) {
-        Reflectness.setSignature(getFunction(), signature);
-        updateReferences(suppressErrors);
+    default void updateReferences() {
+        linkReferences(getFunction().getSignature());
+    }
+
+    default void linkReferences(Signature<T> oldSignature) {
+        for (FunctionReference<T> call : Reflectness.getCalls(oldSignature))
+            Reflectness.setReferencedFunction(call, getFunction());
     }
 
     default T[] execute(Object[][] arguments) {

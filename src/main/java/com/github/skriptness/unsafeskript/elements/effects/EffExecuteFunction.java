@@ -17,7 +17,6 @@ public class EffExecuteFunction extends Effect {
                 "(call|execute|run) %functions% [with [[the] (argument|parameter)[s]] %-objects%]");
     }
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     private Expression<? extends FunctionHandle<?>> functions;
     @Nullable
     private Expression<?> arguments;

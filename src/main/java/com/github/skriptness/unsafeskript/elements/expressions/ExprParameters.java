@@ -8,7 +8,6 @@ import ch.njol.skript.lang.function.Parameter;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
-import com.github.skriptness.unsafeskript.util.Reflectness;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -48,13 +47,9 @@ public class ExprParameters extends PropertyExpression<FunctionHandle<?>, Parame
 
     @Override
     public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
-        Parameter<?>[] parameters = new Parameter[mode == ChangeMode.DELETE ? 0 : delta.length];
-        for (int i = 0; i < parameters.length; i++)
-            parameters[i] = (Parameter<?>) delta[i];
-        for (FunctionHandle<?> function : getExpr().getArray(event)) {
-            Reflectness.setParameters(function.getFunction().getSignature(), parameters);
-            function.updateReferences(true);
-        }
+        delta = delta == null ? new Parameter<?>[0] : delta;
+        for (FunctionHandle<?> function : getExpr().getArray(event))
+            function.setParameters((Parameter<?>[]) delta);
     }
 
     @Override

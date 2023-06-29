@@ -3,7 +3,6 @@ package com.github.skriptness.unsafeskript.elements.classes;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.function.Function;
 import ch.njol.skript.lang.function.FunctionEvent;
-import ch.njol.skript.lang.function.FunctionReference;
 import ch.njol.skript.lang.function.JavaFunction;
 import ch.njol.skript.lang.function.Namespace;
 import ch.njol.skript.lang.function.Parameter;
@@ -12,7 +11,6 @@ import ch.njol.skript.variables.Variables;
 import com.github.skriptness.unsafeskript.util.Reflectness;
 import org.eclipse.jdt.annotation.Nullable;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class JavaFunctionHandle<T> implements FunctionHandle<T> {
@@ -21,6 +19,7 @@ public class JavaFunctionHandle<T> implements FunctionHandle<T> {
     private static final Map<String, Namespace> globalFunctions;
 
     static {
+        // Nothing should ever change these, so it's safe to store them
         javaNamespace = Reflectness.getJavaNamespace();
         globalFunctions = Reflectness.getGlobalFunctions();
     }
@@ -38,7 +37,6 @@ public class JavaFunctionHandle<T> implements FunctionHandle<T> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void swapCode(Trigger trigger) {
         // Function's code was already overwritten, so swap its Trigger directly
         if (function instanceof DelegatingJavaFunction) {
@@ -52,10 +50,8 @@ public class JavaFunctionHandle<T> implements FunctionHandle<T> {
         javaNamespace.addFunction(swappedFunction);
         globalFunctions.put(swappedFunction.getName(), javaNamespace);
 
-        // Replace Function inside old FunctionReferences
-        Collection<FunctionReference<?>> calls = Reflectness.getCalls(function.getSignature());
-        for (FunctionReference<?> call : calls)
-            Reflectness.setFunction(call, swappedFunction);
+        // Update old script references to the function
+        updateReferences();
 
         // Update this handle's Function
         function = swappedFunction;
