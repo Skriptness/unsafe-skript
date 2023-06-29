@@ -1,6 +1,7 @@
 package com.github.skriptness.unsafeskript.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.effects.Delay;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -12,7 +13,6 @@ import ch.njol.skript.sections.SecLoop;
 import ch.njol.skript.sections.SecWhile;
 import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
-import com.github.skriptness.unsafeskript.elements.classes.JavaFunctionHandle;
 import com.github.skriptness.unsafeskript.elements.classes.JavaFunctionHandle.DelegatingJavaFunction;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -34,7 +34,8 @@ public class EffReturn extends Effect {
         }
         if (!isDelayed.isFalse()) {
             Skript.error("A return statement after a delay is useless, as the calling trigger will resume when the delay starts (and won't get any returned value)");
-            return false;
+            // Do not return false otherwise Skript's EffReturn will be attempted and will throw the wrong error
+            return true;
         }
         value = LiteralUtils.defendExpression(exprs[0]);
         return LiteralUtils.canInitSafely(value);
@@ -46,11 +47,11 @@ public class EffReturn extends Effect {
         FunctionEvent<?> evt = (FunctionEvent<?>) event;
         Function<?> function = evt.getFunction();
 
-        if (function.getReturnType() != null) {
+        if (function.getReturnType() != null && !Delay.isDelayed(event)) {
             Object[] result = Converters.convert(this.value.getArray(event), function.getReturnType().getC());
             if (function instanceof ScriptFunction<?>) {
                 ((ScriptFunction) function).setReturnValue(result);
-            } else if (function instanceof JavaFunctionHandle.DelegatingJavaFunction) {
+            } else if (function instanceof DelegatingJavaFunction) {
                 ((DelegatingJavaFunction) function).setReturnValue(result);
             }
         }
