@@ -1,5 +1,5 @@
 name: unsafe-skript
-version: 1.0-SNAPSHOT
+version: @version@
 authors: [Mr. Darth, UnderscoreTud]
 website: https://github.com/Skriptness/unsafe-skript
 api-version: 1.13
