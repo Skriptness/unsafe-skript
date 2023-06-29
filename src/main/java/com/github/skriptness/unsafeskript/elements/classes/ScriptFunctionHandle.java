@@ -3,21 +3,9 @@ package com.github.skriptness.unsafeskript.elements.classes;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.function.Function;
 import ch.njol.skript.lang.function.ScriptFunction;
-
-import java.lang.reflect.Field;
+import com.github.skriptness.unsafeskript.util.Reflectness;
 
 public class ScriptFunctionHandle<T> implements FunctionHandle<T> {
-
-    private static final Field TRIGGER;
-
-    static {
-        try {
-            TRIGGER = ScriptFunction.class.getDeclaredField("trigger");
-            TRIGGER.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private final ScriptFunction<T> function;
 
@@ -33,11 +21,7 @@ public class ScriptFunctionHandle<T> implements FunctionHandle<T> {
 
     @Override
     public void swapCode(Trigger trigger) {
-        try {
-            TRIGGER.set(function, trigger);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        Reflectness.setTrigger(function, trigger);
     }
 
 }

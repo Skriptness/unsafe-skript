@@ -8,7 +8,7 @@ group 'com.github.skriptness.unsafeskript'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenLocal()
+    mavenCentral()
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
@@ -35,7 +35,7 @@ if (project.rootProject.file('local.properties').exists()) {
 
 tasks.withType(JavaCompile).configureEach {
     jar {
-        archiveFileName.set("${rootProject.name}.jar")
+        archiveFileName.set("${rootProject.name}-V${project.version}.jar")
         if (jarDir != null) {
             destinationDirectory.set(file(jarDir))
         }

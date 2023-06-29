@@ -4,15 +4,14 @@ import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.function.Function;
 import ch.njol.skript.lang.function.FunctionEvent;
 import ch.njol.skript.lang.function.FunctionReference;
-import ch.njol.skript.lang.function.Functions;
 import ch.njol.skript.lang.function.JavaFunction;
 import ch.njol.skript.lang.function.Namespace;
 import ch.njol.skript.lang.function.Parameter;
 import ch.njol.skript.lang.function.Signature;
 import ch.njol.skript.variables.Variables;
+import com.github.skriptness.unsafeskript.util.Reflectness;
 import org.eclipse.jdt.annotation.Nullable;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
@@ -20,29 +19,10 @@ public class JavaFunctionHandle<T> implements FunctionHandle<T> {
 
     private static final Namespace javaNamespace;
     private static final Map<String, Namespace> globalFunctions;
-    private static final Field CALLS;
-    private static final Field REFERENCE_FUNCTION;
 
     static {
-        try {
-            // Obtain Namespace of JavaFunctions
-            Field javaNamespace0 = Functions.class.getDeclaredField("javaNamespace");
-            javaNamespace0.setAccessible(true);
-            javaNamespace = (Namespace) javaNamespace0.get(null);
-
-            // Obtain Map of all global Functions
-            Field globalFunctions0 = Functions.class.getDeclaredField("globalFunctions");
-            globalFunctions0.setAccessible(true);
-            //noinspection unchecked
-            globalFunctions = (Map<String, Namespace>) globalFunctions0.get(null);
-
-            CALLS = Signature.class.getDeclaredField("calls");
-            CALLS.setAccessible(true);
-            REFERENCE_FUNCTION = FunctionReference.class.getDeclaredField("function");
-            REFERENCE_FUNCTION.setAccessible(true);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        javaNamespace = Reflectness.getJavaNamespace();
+        globalFunctions = Reflectness.getGlobalFunctions();
     }
 
     private JavaFunction<T> function;
@@ -73,13 +53,9 @@ public class JavaFunctionHandle<T> implements FunctionHandle<T> {
         globalFunctions.put(swappedFunction.getName(), javaNamespace);
 
         // Replace Function inside old FunctionReferences
-        try {
-            Collection<FunctionReference<?>> calls = (Collection<FunctionReference<?>>) CALLS.get(function.getSignature());
-            for (FunctionReference<?> call : calls)
-                REFERENCE_FUNCTION.set(call, swappedFunction);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        Collection<FunctionReference<?>> calls = Reflectness.getCalls(function.getSignature());
+        for (FunctionReference<?> call : calls)
+            Reflectness.setFunction(call, swappedFunction);
 
         // Update this handle's Function
         function = swappedFunction;

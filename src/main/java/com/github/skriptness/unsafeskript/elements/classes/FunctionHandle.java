@@ -3,18 +3,17 @@ package com.github.skriptness.unsafeskript.elements.classes;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionList;
 import ch.njol.skript.lang.Trigger;
-import ch.njol.skript.lang.function.Function;
-import ch.njol.skript.lang.function.Functions;
-import ch.njol.skript.lang.function.JavaFunction;
-import ch.njol.skript.lang.function.Parameter;
-import ch.njol.skript.lang.function.ScriptFunction;
-import ch.njol.skript.lang.function.Signature;
+import ch.njol.skript.lang.function.*;
+import ch.njol.skript.log.RetainingLogHandler;
+import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
+import com.github.skriptness.unsafeskript.util.Reflectness;
 import org.bukkit.event.Event;
 import org.skriptlang.skript.lang.converter.Converters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public interface FunctionHandle<T> {
@@ -40,6 +39,21 @@ public interface FunctionHandle<T> {
     Function<T> getFunction();
 
     void swapCode(Trigger trigger);
+
+    default void updateReferences(boolean suppressErrors) {
+        RetainingLogHandler log = SkriptLogger.startRetainingLog();
+        Collection<FunctionReference<?>> calls = Reflectness.getCalls(getFunction().getSignature());
+        for (FunctionReference<?> call : calls)
+            call.validateFunction(true);
+        if (!suppressErrors)
+            log.printLog();
+        log.close();
+    }
+
+    default void swapSignature(Signature<T> signature, boolean suppressErrors) {
+        Reflectness.setSignature(getFunction(), signature);
+        updateReferences(suppressErrors);
+    }
 
     default T[] execute(Object[][] arguments) {
         Parameter<?>[] parameters = getFunction().getParameters();
