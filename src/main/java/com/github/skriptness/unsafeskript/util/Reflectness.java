@@ -2,6 +2,7 @@ package com.github.skriptness.unsafeskript.util;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Trigger;
+import ch.njol.skript.lang.function.ExprFunctionCall;
 import ch.njol.skript.lang.function.Function;
 import ch.njol.skript.lang.function.FunctionReference;
 import ch.njol.skript.lang.function.Functions;
@@ -19,6 +20,7 @@ public final class Reflectness {
 
     private static final Field FUNCTIONS_JAVANAMESPACE = getField(Functions.class, "javaNamespace");
     private static final Field FUNCTIONS_GLOBALFUNCTIONS = getField(Functions.class, "globalFunctions");
+    private static final Field FUNCTIONS_NAMESPACES = getField(Functions.class, "namespaces");
 
     private static final Field FUNCTION_SIGN = getField(Function.class, "sign");
 
@@ -26,6 +28,7 @@ public final class Reflectness {
 
     private static final Field SIGNATURE_PARAMETERS = getField(Signature.class, "parameters");
     private static final Field SIGNATURE_CALLS = getField(Signature.class, "calls");
+    private static final Field SIGNATURE_SCRIPT = getField(Signature.class, "script");
 
     private static final Field FUNCTIONREFERENCE_FUNCTION = getField(FunctionReference.class, "function");
 
@@ -35,6 +38,10 @@ public final class Reflectness {
 
     public static Map<String, Namespace> getGlobalFunctions() {
         return get(FUNCTIONS_GLOBALFUNCTIONS, null);
+    }
+
+    public static Map<Namespace.Key, Namespace> getNamespaces() {
+        return get(FUNCTIONS_NAMESPACES, null);
     }
 
     public static <T> void setSignature(Function<T> function, Signature<T> signature) {
@@ -51,6 +58,10 @@ public final class Reflectness {
 
     public static <T> Collection<FunctionReference<T>> getCalls(Signature<T> signature) {
         return get(SIGNATURE_CALLS, signature);
+    }
+
+    public static String getScript(Signature<?> signature) {
+        return get(SIGNATURE_SCRIPT, signature);
     }
 
     public static <T> void setReferencedFunction(FunctionReference<T> reference, Function<T> function) {
