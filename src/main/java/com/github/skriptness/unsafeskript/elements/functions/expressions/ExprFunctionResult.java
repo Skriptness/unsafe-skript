@@ -1,6 +1,10 @@
 package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -14,6 +18,10 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Name("Function Result")
+@Description("Returns the result of executing a function with the given arguments.")
+@Examples("broadcast result of function {_thing} with {_pong}")
+@Since("INSERT VERSION")
 public class ExprFunctionResult extends PropertyExpression<FunctionHandle<?>, Object> {
 
     static {

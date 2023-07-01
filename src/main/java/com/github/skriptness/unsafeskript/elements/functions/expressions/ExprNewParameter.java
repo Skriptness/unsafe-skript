@@ -2,6 +2,10 @@ package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.ClassInfo;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.*;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.function.Parameter;
@@ -12,6 +16,10 @@ import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
+@Name("New Function Parameter")
+@Description("Returns a new function parameter with the given type, name, and default value.")
+@Examples("set parameters of function \"bong\" to a new player parameter {_p}")
+@Since("INSERT VERSION")
 public class ExprNewParameter extends SimpleExpression<Parameter> {
 
     static {

@@ -1,6 +1,7 @@
 package com.github.skriptness.unsafeskript.elements.functions.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.NoDoc;
 import ch.njol.skript.effects.Delay;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -19,6 +20,7 @@ import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 import org.skriptlang.skript.lang.converter.Converters;
 
+@NoDoc
 public class EffReturn extends Effect {
 
     static {

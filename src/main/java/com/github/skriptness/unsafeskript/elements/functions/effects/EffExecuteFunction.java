@@ -1,6 +1,10 @@
 package com.github.skriptness.unsafeskript.elements.functions.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -10,6 +14,10 @@ import com.github.skriptness.unsafeskript.elements.functions.classes.handles.Fun
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
+@Name("Execute Function")
+@Description("Executes a function with the given parameters.")
+@Examples("run function \"rotate_%{_direction}%\" with {_structure-name}")
+@Since("INSERT VERSION")
 public class EffExecuteFunction extends Effect {
 
     static {

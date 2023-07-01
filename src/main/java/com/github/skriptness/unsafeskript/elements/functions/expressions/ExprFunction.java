@@ -1,6 +1,10 @@
 package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -10,6 +14,10 @@ import com.github.skriptness.unsafeskript.elements.functions.classes.handles.Fun
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
+@Name("Function")
+@Description("Returns a reference to the provided function.")
+@Examples("run (local function \"hello_there\" from \"bob.sk\")")
+@Since("INSERT VERSION")
 public class ExprFunction extends SimpleExpression<FunctionHandle> {
 
     static {

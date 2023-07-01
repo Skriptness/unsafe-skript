@@ -2,11 +2,19 @@ package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.classes.ClassInfo;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
+@Name("Return Type")
+@Description("Returns the return type of a function. This can be modified.")
+@Examples("set {_functions::*} to all functions where [function input is local]")
+@Since("INSERT VERSION")
 public class ExprReturnType extends SimplePropertyExpression<FunctionHandle<?>, ClassInfo> {
 
     static {

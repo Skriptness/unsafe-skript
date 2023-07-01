@@ -2,6 +2,10 @@ package com.github.skriptness.unsafeskript.elements.functions.sections;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.SectionNode;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Section;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -15,6 +19,13 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.List;
 
+@Name("Swap Function Code")
+@Description("Swaps the code of any given function to the one within this section.")
+@Examples({
+        "swap code of function \"floor\":",
+            "\treturn 0 # >:O"
+})
+@Since("INSERT VERSION")
 public class SecSwapFunctionCode extends Section {
 
     static {

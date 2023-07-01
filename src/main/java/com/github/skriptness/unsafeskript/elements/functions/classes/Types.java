@@ -41,8 +41,8 @@ public class Types {
         Classes.registerClass(new ClassInfo<>(Parameter.class, "parameter")
                 .user("(function )parameters?")
                 .name("Function Parameter")
-                .description("Represents a parameter of a function.")
-                .examples("")
+                .description("A function parameter consists of a name, a type (singular or plural), and a default value.")
+                .examples("set {_parameter} to a new string parameter {_title} defaulting to \"<no title provided>\"")
                 .parser(new Parser<Parameter<?>>() {
                     @Override
                     @Nullable
