@@ -1,4 +1,4 @@
-package com.github.skriptness.unsafeskript.elements.classes;
+package com.github.skriptness.unsafeskript.elements.functions.classes.handles;
 
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.function.Function;

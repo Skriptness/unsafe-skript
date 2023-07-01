@@ -1,4 +1,4 @@
-package com.github.skriptness.unsafeskript.elements.expressions;
+package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.expressions.base.PropertyExpression;
@@ -7,7 +7,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.function.Parameter;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
-import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 

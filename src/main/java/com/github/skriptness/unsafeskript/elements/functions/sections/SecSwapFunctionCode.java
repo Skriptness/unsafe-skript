@@ -1,4 +1,4 @@
-package com.github.skriptness.unsafeskript.elements.sections;
+package com.github.skriptness.unsafeskript.elements.functions.sections;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.SectionNode;
@@ -9,7 +9,7 @@ import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.function.FunctionEvent;
 import ch.njol.util.Kleenean;
-import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 

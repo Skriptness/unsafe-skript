@@ -1,12 +1,12 @@
-package com.github.skriptness.unsafeskript.elements.conditions;
+package com.github.skriptness.unsafeskript.elements.functions.conditions;
 
 import ch.njol.skript.conditions.base.PropertyCondition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
-import com.github.skriptness.unsafeskript.elements.classes.JavaFunctionHandle;
-import com.github.skriptness.unsafeskript.elements.classes.ScriptFunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.JavaFunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.ScriptFunctionHandle;
 
 public class CondOrigin extends PropertyCondition<FunctionHandle<?>> {
 

@@ -1,8 +1,8 @@
-package com.github.skriptness.unsafeskript.elements.expressions;
+package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
-import com.github.skriptness.unsafeskript.elements.classes.ScriptFunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.ScriptFunctionHandle;
 import org.eclipse.jdt.annotation.Nullable;
 
 public class ExprFunctionScript extends SimplePropertyExpression<FunctionHandle<?>, String> {

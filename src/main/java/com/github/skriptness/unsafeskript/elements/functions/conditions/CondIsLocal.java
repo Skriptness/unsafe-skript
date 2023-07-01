@@ -1,7 +1,7 @@
-package com.github.skriptness.unsafeskript.elements.conditions;
+package com.github.skriptness.unsafeskript.elements.functions.conditions;
 
 import ch.njol.skript.conditions.base.PropertyCondition;
-import com.github.skriptness.unsafeskript.elements.classes.FunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
 
 public class CondIsLocal extends PropertyCondition<FunctionHandle<?>> {
 

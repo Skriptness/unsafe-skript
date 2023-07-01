@@ -1,4 +1,4 @@
-package com.github.skriptness.unsafeskript.elements.expressions;
+package com.github.skriptness.unsafeskript.elements.functions.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.ClassInfo;

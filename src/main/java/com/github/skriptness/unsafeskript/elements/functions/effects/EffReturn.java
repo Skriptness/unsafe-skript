@@ -1,4 +1,4 @@
-package com.github.skriptness.unsafeskript.elements.effects;
+package com.github.skriptness.unsafeskript.elements.functions.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.effects.Delay;
@@ -13,7 +13,8 @@ import ch.njol.skript.sections.SecLoop;
 import ch.njol.skript.sections.SecWhile;
 import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
-import com.github.skriptness.unsafeskript.elements.classes.JavaFunctionHandle.DelegatingJavaFunction;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.JavaFunctionHandle.DelegatingJavaFunction;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.JavaFunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 import org.skriptlang.skript.lang.converter.Converters;
@@ -51,7 +52,7 @@ public class EffReturn extends Effect {
             Object[] result = Converters.convert(this.value.getArray(event), function.getReturnType().getC());
             if (function instanceof ScriptFunction<?>) {
                 ((ScriptFunction) function).setReturnValue(result);
-            } else if (function instanceof DelegatingJavaFunction) {
+            } else if (function instanceof JavaFunctionHandle.DelegatingJavaFunction) {
                 ((DelegatingJavaFunction) function).setReturnValue(result);
             }
         }

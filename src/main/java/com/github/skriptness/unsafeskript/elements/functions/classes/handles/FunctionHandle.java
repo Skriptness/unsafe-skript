@@ -1,5 +1,6 @@
-package com.github.skriptness.unsafeskript.elements.classes;
+package com.github.skriptness.unsafeskript.elements.functions.classes.handles;
 
+import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionList;
 import ch.njol.skript.lang.Trigger;
@@ -10,19 +11,13 @@ import ch.njol.skript.lang.function.JavaFunction;
 import ch.njol.skript.lang.function.Parameter;
 import ch.njol.skript.lang.function.ScriptFunction;
 import ch.njol.skript.lang.function.Signature;
-import ch.njol.skript.lang.function.SimpleJavaFunction;
-import ch.njol.skript.log.LogHandler;
-import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
 import com.github.skriptness.unsafeskript.util.Reflectness;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
 import org.skriptlang.skript.lang.converter.Converters;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public interface FunctionHandle<T> {
@@ -51,6 +46,11 @@ public interface FunctionHandle<T> {
 
     default void setParameters(Parameter<?>[] parameters) {
         Reflectness.setSignatureParameters(getFunction().getSignature(), parameters);
+        updateReferences();
+    }
+
+    default void setReturnType(ClassInfo<?> classInfo) {
+        Reflectness.setReturnType(getFunction().getSignature(), classInfo);
         updateReferences();
     }
 
