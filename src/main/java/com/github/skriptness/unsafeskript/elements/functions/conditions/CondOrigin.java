@@ -15,7 +15,7 @@ import com.github.skriptness.unsafeskript.elements.functions.classes.handles.Scr
 @Name("Is Java/Script Function")
 @Description({"Checks whether a function is a Java function or a script function."})
 @Examples("{_function} is a script function")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class CondOrigin extends PropertyCondition<FunctionHandle<?>> {
 
     static {

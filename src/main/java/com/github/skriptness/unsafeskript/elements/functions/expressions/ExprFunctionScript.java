@@ -12,7 +12,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @Name("Function Script")
 @Description("Returns the declaring script of a given function.")
 @Examples("send \"Function %{_function}% was defined in %script of {_function}%\"")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class ExprFunctionScript extends SimplePropertyExpression<FunctionHandle<?>, String> {
 
     static {

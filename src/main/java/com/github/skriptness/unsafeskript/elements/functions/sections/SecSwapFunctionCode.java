@@ -25,7 +25,7 @@ import java.util.List;
         "swap code of function \"floor\":",
             "\treturn 0 # >:O"
 })
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class SecSwapFunctionCode extends Section {
 
     static {

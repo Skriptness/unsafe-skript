@@ -16,6 +16,7 @@ public class Types {
                 .name("Function Reference")
                 .description("Represents a reference to a Skript function.")
                 .examples("set {_function} to the function \"product\"")
+                .since("1.0-alpha1")
                 .parser(new Parser<FunctionHandle<?>>() {
                     @Override
                     @Nullable

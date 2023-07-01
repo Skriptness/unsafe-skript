@@ -20,7 +20,7 @@ import java.util.Arrays;
 @Name("Function Parameters")
 @Description("Returns a list of all the parameters of a function. This list can be modified.")
 @Examples("clear parameters of function \"floor\" # >:)")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class ExprParameters extends PropertyExpression<FunctionHandle<?>, Parameter> {
 
     static {

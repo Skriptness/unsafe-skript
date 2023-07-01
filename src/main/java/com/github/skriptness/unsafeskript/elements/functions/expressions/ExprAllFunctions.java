@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 @Name("All Functions")
 @Description("Returns a list of all functions. It can be filtered to include only Java or script functions.")
 @Examples("set {_functions::*} to all java functions")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class ExprAllFunctions extends SimpleExpression<FunctionHandle> {
 
     static {

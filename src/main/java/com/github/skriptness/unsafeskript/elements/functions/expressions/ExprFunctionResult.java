@@ -21,7 +21,7 @@ import java.util.Objects;
 @Name("Function Result")
 @Description("Returns the result of executing a function with the given arguments.")
 @Examples("broadcast result of function {_thing} with {_pong}")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class ExprFunctionResult extends PropertyExpression<FunctionHandle<?>, Object> {
 
     static {

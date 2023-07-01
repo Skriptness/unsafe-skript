@@ -17,7 +17,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @Name("Execute Function")
 @Description("Executes a function with the given parameters.")
 @Examples("run function \"rotate_%{_direction}%\" with {_structure-name}")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class EffExecuteFunction extends Effect {
 
     static {

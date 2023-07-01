@@ -10,7 +10,7 @@ import com.github.skriptness.unsafeskript.elements.functions.classes.handles.Fun
 @Name("Is Local")
 @Description("Checks whether a function is local.")
 @Examples("set {_functions::*} to all functions where [function input is local]")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class CondIsLocal extends PropertyCondition<FunctionHandle<?>> {
 
     static {

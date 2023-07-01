@@ -14,7 +14,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @Name("Return Type")
 @Description("Returns the return type of a function. This can be modified.")
 @Examples("set {_functions::*} to all functions where [function input is local]")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class ExprReturnType extends SimplePropertyExpression<FunctionHandle<?>, ClassInfo> {
 
     static {

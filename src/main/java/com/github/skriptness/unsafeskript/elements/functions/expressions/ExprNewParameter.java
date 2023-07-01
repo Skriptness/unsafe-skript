@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.Nullable;
 @Name("New Function Parameter")
 @Description("Returns a new function parameter with the given type, name, and default value.")
 @Examples("set parameters of function \"bong\" to a new player parameter {_p}")
-@Since("INSERT VERSION")
+@Since("1.0-alpha1")
 public class ExprNewParameter extends SimpleExpression<Parameter> {
 
     static {
