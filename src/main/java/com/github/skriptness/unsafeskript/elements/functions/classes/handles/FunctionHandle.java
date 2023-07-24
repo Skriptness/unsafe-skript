@@ -45,6 +45,7 @@ public interface FunctionHandle<T> {
     void swapCode(Trigger trigger);
 
     default void setParameters(Parameter<?>[] parameters) {
+        parameters = parameters == null ? new Parameter[0] : parameters;
         Reflectness.setSignatureParameters(getFunction().getSignature(), parameters);
         updateReferences();
     }

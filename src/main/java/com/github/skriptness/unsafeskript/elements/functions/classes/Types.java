@@ -7,6 +7,10 @@ import ch.njol.skript.lang.function.Parameter;
 import ch.njol.skript.registrations.Classes;
 import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
 import org.eclipse.jdt.annotation.Nullable;
+import org.skriptlang.skript.lang.comparator.Comparators;
+import org.skriptlang.skript.lang.comparator.Relation;
+
+import java.util.Objects;
 
 public class Types {
 
@@ -58,14 +62,27 @@ public class Types {
 
                     @Override
                     public String toString(Parameter<?> parameter, int flags) {
-                        return Classes.toString(parameter.getType()) + " parameter {_" + parameter.getName() + (parameter.isSingleValue() ? "}" : "::*}");
+                        return Classes.toString(parameter.getType()) + " parameter {_" + parameter.getName() +
+                                (parameter.isSingleValue() ? "}" : "::*}") +
+                                (parameter.getDefaultExpression() == null ? "" : " defaulting to " +
+                                        parameter.getDefaultExpression().toString(null, false));
                     }
 
                     @Override
                     public String toVariableNameString(Parameter<?> parameter) {
-                        return "parameter(" + Classes.toString(parameter.getType()) + "):" + parameter.getName();
+                        return String.format("parameter(%s):%s=%s",
+                                parameter.getType().getName().toString(!parameter.isSingleValue()),
+                                parameter.getName(),
+                                parameter.getDefaultExpression() != null ? parameter.getDefaultExpression().toString(null, false) : "null");
                     }
                 }));
+
+        Comparators.registerComparator(Parameter.class, Parameter.class, (param1, param2) ->
+                Relation.get(param1.getName().equals(param2.getName())
+                        && param1.isSingleValue() == param2.isSingleValue()
+                        && param1.getType().equals(param2.getType())
+                        && Objects.equals(param1.getDefaultExpression(), param2.getDefaultExpression())));
+
     }
 
 }
