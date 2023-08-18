@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Function")
 @Description("Returns a reference to the provided function.")
-@Examples("run (local function \"hello_there\" from \"bob.sk\")")
+@Examples("run (function \"hello_there\" from \"bob.sk\")")
 @Since("1.0-alpha1")
 public class ExprFunction extends SimpleExpression<FunctionHandle> {
 
