@@ -13,6 +13,7 @@ import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.function.FunctionEvent;
 import ch.njol.util.Kleenean;
+import com.github.skriptness.unsafeskript.UnsafeSkript;
 import com.github.skriptness.unsafeskript.elements.functions.classes.handles.FunctionHandle;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -42,6 +43,7 @@ public class SecSwapFunctionCode extends Section {
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult,
                         SectionNode sectionNode, List<TriggerItem> triggerItems) {
+        UnsafeSkript.secSwapCodeUsed = true;
         function = (Expression<? extends FunctionHandle<?>>) exprs[0];
         trigger = loadCode(sectionNode, "swap function code", FunctionEvent.class);
         return true;

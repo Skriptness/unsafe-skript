@@ -2,6 +2,7 @@ package com.github.skriptness.unsafeskript;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import com.github.skriptness.unsafeskript.util.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,8 +10,10 @@ import java.io.IOException;
 
 public class UnsafeSkript extends JavaPlugin {
 
+    private static final int PLUGIN_ID = 19569;
     private static UnsafeSkript instance;
     private static SkriptAddon addonInstance;
+    public static boolean secSwapCodeUsed = false;
 
     @Override
     public void onEnable() {
@@ -28,6 +31,10 @@ public class UnsafeSkript extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Metrics metrics = new Metrics(this, PLUGIN_ID);
+        metrics.addCustomChart(new Metrics.SimplePie("skriptVersion", () -> Skript.getVersion().toString()));
+        metrics.addCustomChart(new Metrics.SimplePie("secSwapCodeUsed", () -> secSwapCodeUsed + ""));
 
     }
 
