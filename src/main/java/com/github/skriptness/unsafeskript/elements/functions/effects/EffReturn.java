@@ -2,9 +2,9 @@ package com.github.skriptness.unsafeskript.elements.functions.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.NoDoc;
-import ch.njol.skript.effects.Delay;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SectionSkriptEvent;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.function.Function;
@@ -14,8 +14,9 @@ import ch.njol.skript.sections.SecLoop;
 import ch.njol.skript.sections.SecWhile;
 import ch.njol.skript.util.LiteralUtils;
 import ch.njol.util.Kleenean;
-import com.github.skriptness.unsafeskript.elements.functions.classes.handles.JavaFunctionHandle.DelegatingJavaFunction;
 import com.github.skriptness.unsafeskript.elements.functions.classes.handles.JavaFunctionHandle;
+import com.github.skriptness.unsafeskript.elements.functions.classes.handles.JavaFunctionHandle.DelegatingJavaFunction;
+import com.github.skriptness.unsafeskript.elements.functions.sections.SecSwapFunctionCode;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 import org.skriptlang.skript.lang.converter.Converters;
@@ -30,18 +31,25 @@ public class EffReturn extends Effect {
     private Expression<?> value;
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-        if (!getParser().isCurrentEvent(FunctionEvent.class)) {
-            Skript.error("The return statement can only be used in a function");
+        if (!(getParser().isCurrentStructure(SectionSkriptEvent.class) &&
+              ((SectionSkriptEvent) getParser().getCurrentStructure()).isSection(SecSwapFunctionCode.class))) {
             return false;
         }
+
+        value = LiteralUtils.defendExpression(exprs[0]);
+        if (!LiteralUtils.canInitSafely(exprs[0])) {
+            Skript.error("Can't understand this expression: " + value);
+            return false;
+        }
+
         if (!isDelayed.isFalse()) {
             Skript.error("A return statement after a delay is useless, as the calling trigger will resume when the delay starts (and won't get any returned value)");
-            // Do not return false otherwise Skript's EffReturn will be attempted and will throw the wrong error
-            return true;
+            return false;
         }
-        value = LiteralUtils.defendExpression(exprs[0]);
-        return LiteralUtils.canInitSafely(value);
+
+        return true;
     }
 
     @Override
@@ -50,7 +58,7 @@ public class EffReturn extends Effect {
         FunctionEvent<?> evt = (FunctionEvent<?>) event;
         Function<?> function = evt.getFunction();
 
-        if (function.getReturnType() != null && !Delay.isDelayed(event)) {
+        if (function.getReturnType() != null) {
             Object[] result = Converters.convert(this.value.getArray(event), function.getReturnType().getC());
             if (function instanceof ScriptFunction<?>) {
                 ((ScriptFunction) function).setReturnValue(result);
